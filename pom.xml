@@ -64,6 +64,15 @@
                     </java>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>11</source> <!-- Set this to 11, 17, or your desired version -->
+                    <target>11</target> <!-- Ensure this matches the source version -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
