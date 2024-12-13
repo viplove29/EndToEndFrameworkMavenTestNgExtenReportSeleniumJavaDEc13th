@@ -25,6 +25,7 @@ public class GoogleSearchTestOne {
     googlePage.launchPage("https://www.google.com");
     googlePage.search("Selenium TestNG Maven tutorial");
     System.out.println("Title of the page is: " + driver.getTitle());
+    System.out.println("Title of the page is: " + driver.getTitle());
   }
 
   @AfterMethod
