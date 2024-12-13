@@ -20,7 +20,7 @@ public class GoogleSearchTest {
 
   @BeforeSuite
   public void setupReport() {
-    ExtentSparkReporter spark = new ExtentSparkReporter("reports/ExtentReport.html");
+    ExtentSparkReporter spark = new ExtentSparkReporter("target/ExtentReport.html");
     extent = new ExtentReports();
     extent.attachReporter(spark);
   }
@@ -69,7 +69,7 @@ public class GoogleSearchTest {
     extent.flush();
 
     // Automatically open the report in the default browser
-    File reportFile = new File("reports/ExtentReport.html");
+    File reportFile = new File("target/ExtentReport.html");
     if (reportFile.exists()) {
       try {
         Desktop.getDesktop().browse(reportFile.toURI());

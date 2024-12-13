@@ -44,5 +44,5 @@ jobs:
         with:
           name: Test-Reports
           path: |
-            target/surefire-reports/ # Default TestNG report path
-            ExtentReport.html # Path to your Extent Report
+            target/surefire-reports/*.xml
+            target/ExtentReport.html # Adjust this path if necessary
