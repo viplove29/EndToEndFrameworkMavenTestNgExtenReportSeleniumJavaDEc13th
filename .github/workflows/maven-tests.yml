@@ -54,6 +54,7 @@ jobs:
           server_port: 587  # TLS port
           username: ${{ secrets.OUTLOOK_USERNAME }}  # Outlook email address
           password: ${{ secrets.OUTLOOK_APP_PASSWORD }}  # Outlook app password or regular password
+          from: ${{ secrets.OUTLOOK_USERNAME }}  # Sender's email address (same as username)
           to: ${{ secrets.TO_EMAIL }}  # Recipient email (use secret for flexibility)
           subject: "Test Report"
           body: "Please find the attached test report."
