@@ -1,0 +1,48 @@
+name: Run Selenium Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Java environment
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Use the JDK version required for your project
+
+      # Step 3: Cache Maven dependencies to speed up builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      # Step 4: Run Maven tests
+      - name: Run Maven Tests
+        run: mvn clean test
+
+      # Step 5: Upload Extent Reports (or other generated files) as artifacts
+      - name: Upload Test Reports
+        if: always() # Always run, even if tests fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test-Reports
+          path: |
+            target/surefire-reports/ # Default TestNG report path
+            ExtentReport.html # Path to your Extent Report
