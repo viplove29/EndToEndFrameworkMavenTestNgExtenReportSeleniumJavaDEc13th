@@ -25,7 +25,7 @@ public class BaseClass {
 
   @BeforeMethod
   @Parameters("browser")
-  public void setUp(String browser) {
+  public void setUp(@Optional("chrome") String browser) {
     DriverFactory.setDriver(browser);
   }
 
