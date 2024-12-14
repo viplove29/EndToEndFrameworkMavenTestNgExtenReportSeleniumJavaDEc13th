@@ -1,50 +1,39 @@
 package org.example;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
 
-public class GoogleSearchTest {
-
-  WebDriver driver;
-
-  ExtentReports extent;
-  ExtentTest test;
-
-  @BeforeSuite
-  public void setupReport() {
-    ExtentSparkReporter spark = new ExtentSparkReporter("target/ExtentReport.html");
-    extent = new ExtentReports();
-    extent.attachReporter(spark);
-  }
-
-  @BeforeMethod
-  public void setUp() {
-    WebDriverManager.chromedriver().setup();
-    driver = new ChromeDriver();
-    driver.manage().window().maximize();
-  }
+public class GoogleSearchTest extends BaseClass {
 
   @Test
-  public void searchGoogle() {
+  public void searchGoogle1() {
+    WebDriver driver = DriverFactory.getDriver();
     driver.get("https://www.google.com");
     System.out.println("Title of the page is: " + driver.getTitle());
     // Create a test in the report
-    test = extent.createTest("Sample Test");
+    test = extent.createTest("Sample Test 1");
     test.info("Starting the test");
     test.pass("Test passed successfully");
   }
 
   @Test
-  public void searchTest() {
-    test = extent.createTest("Search Test");
+  public void searchGoogle3() {
+    WebDriver driver = DriverFactory.getDriver();
+    test = extent.createTest("Search Test 3");
+    test.info("Navigating to Google");
+    googlePage = new GoogleHomePage(driver);
+    googlePage.launchPage("https://www.google.com");
+    googlePage.search("Selenium TestNG Maven tutorial 2");
+    System.out.println("Title of the page is: " + driver.getTitle());
+    String title = driver.getTitle();
+    test.info("Page title is: " + title);
+  }
+
+  @Test
+  public void searchTest2() {
+    WebDriver driver = DriverFactory.getDriver();
+    test = extent.createTest("Search Test 2");
     test.info("Navigating to Google");
     driver.get("https://www.google.com");
     String title = driver.getTitle();
@@ -54,30 +43,6 @@ public class GoogleSearchTest {
       test.pass("Title verification passed");
     } else {
       test.fail("Title verification failed");
-    }
-  }
-
-  @AfterMethod
-  public void tearDown() {
-    if (driver != null) {
-      driver.quit();
-    }
-  }
-
-  @AfterSuite
-  public void tearDownReport() {
-    extent.flush();
-
-    // Automatically open the report in the default browser
-    File reportFile = new File("target/ExtentReport.html");
-    if (reportFile.exists()) {
-      try {
-        Desktop.getDesktop().browse(reportFile.toURI());
-      } catch (IOException e) {
-        System.err.println("Failed to open report: " + e.getMessage());
-      }
-    } else {
-      System.err.println("Report file does not exist!");
     }
   }
 }
