@@ -6,21 +6,37 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import org.openqa.selenium.WebDriver;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.example.utility.ConfigManager;
+import org.example.utility.DriverFactory;
 import org.testng.annotations.*;
 
 public class BaseClass {
 
-  WebDriver driver;
-  ExtentReports extent;
-  ExtentTest test;
   GoogleHomePage googlePage;
+  ExtentTest test;
+  String reportPath;
+  ExtentReports extent;
 
   @BeforeSuite
   public void setupReport() {
-    ExtentSparkReporter spark = new ExtentSparkReporter("target/ExtentReport.html");
+    // Generate unique file name using timestamp
+    String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    reportPath = "target/ExtentReport_" + timestamp + ".html";
+
+    // Initialize the ExtentSparkReporter with unique report name
+    ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
     extent = new ExtentReports();
     extent.attachReporter(spark);
+  }
+
+  @BeforeSuite
+  public void setup() {
+    // Example of accessing configuration
+    String browser = ConfigManager.getProperty("browser");
+    System.out.println("Running tests on browser: " + browser);
   }
 
   @BeforeMethod
@@ -39,7 +55,7 @@ public class BaseClass {
     extent.flush();
 
     // Automatically open the report in the default browser
-    File reportFile = new File("target/ExtentReport.html");
+    File reportFile = new File(reportPath);
     if (reportFile.exists()) {
       try {
         Desktop.getDesktop().browse(reportFile.toURI());

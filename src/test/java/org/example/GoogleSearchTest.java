@@ -1,6 +1,7 @@
 package org.example;
 
-import java.awt.*;
+import org.example.utility.ConfigManager;
+import org.example.utility.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 
@@ -9,7 +10,8 @@ public class GoogleSearchTest extends BaseClass {
   @Test
   public void searchGoogle1() {
     WebDriver driver = DriverFactory.getDriver();
-    driver.get("https://www.google.com");
+    String url = ConfigManager.getProperty("google.url");
+    driver.get(url); // Open the URL from config
     System.out.println("Title of the page is: " + driver.getTitle());
     // Create a test in the report
     test = extent.createTest("Sample Test 1");

@@ -93,7 +93,7 @@
                     <parallel>methods</parallel>
                     <threadCount>4</threadCount>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src/main/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <browser>chrome</browser>
