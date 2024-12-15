@@ -46,10 +46,10 @@ jobs:
         run: |
           $report = Get-ChildItem -Path target -Filter "ExtentReport_*.html" | Sort-Object LastWriteTime | Select-Object -Last 1
           echo "report=$($report.FullName)" >> $env:GITHUB_ENV
-          #Get-ChildItem: Lists files in the target directory that match the pattern ExtentReport_*.html.
-          #Sort-Object LastWriteTime: Sorts the files by their last modified time.
-          #Select-Object -Last 1: Picks the most recently modified file.
-          #echo "report=$($report.FullName)" >> $env:GITHUB_ENV  assigns the file path of the latest report to the environment variable report
+        #Get-ChildItem: Lists files in the target directory that match the pattern ExtentReport_*.html.
+        #Sort-Object LastWriteTime: Sorts the files by their last modified time.
+        #Select-Object -Last 1: Picks the most recently modified file.
+        #echo "report=$($report.FullName)" >> $env:GITHUB_ENV  assigns the file path of the latest report to the environment variable report
 
         # Step 6: Upload Extent Reports (or other generated files) as artifacts
         # In the Upload Test Reports step, the path includes target/surefire-reports/*.xml and ${{ env.report }} for the dynamic Extent report.
@@ -74,6 +74,6 @@ jobs:
           password: ${{ secrets.GMAIL_APP_PASSWORD }}  # gmail app password or regular password
           from: ${{ secrets.GMAIL_USERNAME }}  # Sender's email address (same as username)
           to: ${{ secrets.TO_EMAIL }}  # Recipient email (use secret for flexibility)
-          subject: "Test Report"
+          subject: "Test Report for my youtube viewers"
           body: "Please find the attached test report."
           attachments: ${{ env.report }}  # Attach the report file (adjust if necessary)
