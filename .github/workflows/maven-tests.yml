@@ -45,7 +45,7 @@ jobs:
           name: Test-Reports
           path: |
             target/surefire-reports/*.xml
-            target/ExtentReport.html # Adjust this path if necessary
+            target/ExtentReport.html
       # Step 6: Send the Report via Email (using Outlook SMTP server)
       - name: Send Test Report Email
         uses: dawidd6/action-send-mail@v3
