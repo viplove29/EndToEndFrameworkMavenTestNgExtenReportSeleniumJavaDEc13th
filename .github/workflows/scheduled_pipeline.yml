@@ -31,11 +31,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-
 
-      # Step 4: Run Maven tests
+      # Step 5: Run Maven tests
       - name: Run Maven Tests
         run: mvn clean test
 
-      # Step 5: Upload Extent Reports (or other generated files) as artifacts
+        # Step 4: Find the Latest Extent Report
+        # Uses a shell command to locate the latest dynamically named Extent report in the target directory.
+        #Stores the file path in the GitHub Actions environment variable report
+      - name: Find Latest Extent Report
+        id: find_report
+        shell: pwsh # to ensure the run block executes in PowerShell on Windows.
+        run: |
+          $report = Get-ChildItem -Path target -Filter "ExtentReport_*.html" | Sort-Object LastWriteTime | Select-Object -Last 1
+          echo "report=$($report.FullName)" >> $env:GITHUB_ENV
+          #Get-ChildItem: Lists files in the target directory that match the pattern ExtentReport_*.html.
+          #Sort-Object LastWriteTime: Sorts the files by their last modified time.
+          #Select-Object -Last 1: Picks the most recently modified file.
+          #echo "report=$($report.FullName)" >> $env:GITHUB_ENV  assigns the file path of the latest report to the environment variable report
+
+        # Step 6: Upload Extent Reports (or other generated files) as artifacts
+        # In the Upload Test Reports step, the path includes target/surefire-reports/*.xml and ${{ env.report }} for the dynamic Extent report.
+
       - name: Upload Test Reports
         if: always() # Always run, even if tests fail
         uses: actions/upload-artifact@v4
@@ -43,8 +59,10 @@ jobs:
           name: Test-Reports
           path: |
             target/surefire-reports/*.xml
-            target/ExtentReport.html
-      # Step 6: Send the Report via Email (using Outlook SMTP server)
+            ${{ env.report }}
+
+      # Step 7: Send the Report via Email (using Outlook SMTP server)
+      #      In the Send Test Report Email step, the attachments parameter uses ${{ env.report }}
       - name: Send Test Report Email
         uses: dawidd6/action-send-mail@v3
         with:
@@ -56,4 +74,4 @@ jobs:
           to: ${{ secrets.TO_EMAIL }}  # Recipient email (use secret for flexibility)
           subject: "Test Report"
           body: "Please find the attached test report."
-          attachments: target/ExtentReport.html  # Attach the report file (adjust if necessary)
+          attachments: ${{ env.report }}  # Attach the report file (adjust if necessary)
