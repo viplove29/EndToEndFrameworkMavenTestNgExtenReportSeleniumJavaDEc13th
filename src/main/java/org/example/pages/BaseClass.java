@@ -1,4 +1,4 @@
-package org.example;
+package org.example.pages;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -8,17 +8,15 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.example.utility.ConfigManager;
 import org.example.utility.DriverFactory;
 import org.testng.annotations.*;
 
 public class BaseClass {
 
-  GoogleHomePage googlePage;
-  ExtentTest test;
+  protected ExtentTest test;
   String reportPath;
-  ExtentReports extent;
+  protected ExtentReports extent;
 
   @BeforeSuite
   public void setupReport() {

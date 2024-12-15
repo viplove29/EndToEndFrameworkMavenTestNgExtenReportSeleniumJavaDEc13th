@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.pages.BaseClass;
+import org.example.pages.GoogleHomePage;
 import org.example.utility.ConfigManager;
 import org.example.utility.DriverFactory;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +26,7 @@ public class GoogleSearchTest extends BaseClass {
     WebDriver driver = DriverFactory.getDriver();
     test = extent.createTest("Search Test 3");
     test.info("Navigating to Google");
-    googlePage = new GoogleHomePage(driver);
+    GoogleHomePage googlePage = new GoogleHomePage(driver);
     googlePage.launchPage("https://www.google.com");
     googlePage.search("Selenium TestNG Maven tutorial 2");
     System.out.println("Title of the page is: " + driver.getTitle());
