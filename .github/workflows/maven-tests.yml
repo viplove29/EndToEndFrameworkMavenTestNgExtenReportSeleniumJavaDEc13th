@@ -42,11 +42,16 @@ jobs:
         #Stores the file path in the GitHub Actions environment variable report
       - name: Find Latest Extent Report
         id: find_report
+        shell: pwsh # to ensure the run block executes in PowerShell on Windows.
         run: |
-          REPORT=$(ls target/ExtentReport_*.html | sort | tail -n 1)
-          echo "report=$REPORT" >> $GITHUB_ENV
-          
-          # Step 6: Upload Extent Reports (or other generated files) as artifacts
+          $report = Get-ChildItem -Path target -Filter "ExtentReport_*.html" | Sort-Object LastWriteTime | Select-Object -Last 1
+          echo "report=$($report.FullName)" >> $env:GITHUB_ENV
+          #Get-ChildItem: Lists files in the target directory that match the pattern ExtentReport_*.html.
+          #Sort-Object LastWriteTime: Sorts the files by their last modified time.
+          #Select-Object -Last 1: Picks the most recently modified file.
+          #echo "report=$($report.FullName)" >> $env:GITHUB_ENV  assigns the file path of the latest report to the environment variable report
+
+        # Step 6: Upload Extent Reports (or other generated files) as artifacts
         # In the Upload Test Reports step, the path includes target/surefire-reports/*.xml and ${{ env.report }} for the dynamic Extent report.
 
       - name: Upload Test Reports
